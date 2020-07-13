@@ -9,11 +9,13 @@
 #include "random"
 #include "head.h"
 #include "PlayerIO.h"
+#include <utility>
 
 class Bot1 : public Player {
 public:
     explicit Bot1(std::string name, PlayerIO* playerIo);
     int chooseColumn(std::array<std::array<char, columns>,rows>&) override;
+
 };
 
 

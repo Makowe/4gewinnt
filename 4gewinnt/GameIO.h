@@ -11,7 +11,6 @@ public:
     virtual void printWinner(Player* winner);
     virtual void PrintTurn(Player* playerNow);
     virtual void printDraw();
-    virtual void error();
 
 };
 

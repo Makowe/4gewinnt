@@ -8,10 +8,9 @@
 #define symbolA 'X'
 #define symbolB 'O'
 
-enum numbers{
+enum numbers {
     rows = 6,
     columns = 7,
-
 };
 
 

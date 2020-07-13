@@ -5,6 +5,7 @@
 #include "Bot4.h"
 
 #include <utility>
+#include "algorithm"
 
 Bot4::Bot4(std::string name,PlayerIO* playerIo)
 :
@@ -15,7 +16,7 @@ Player(std::move(name),playerIo) {
 int Bot4::chooseColumn(std::array<std::array<char, columns>, rows> & field) {
     _playerIo->printBoard(field);
     int goodColumn;
-    int badColumn[3] = {-1,-1,-1};
+    std::vector<int> badColumn;
 
     //FIRST PRIORITY: WINNING IF POSSIBLE
     //horizontal
@@ -66,7 +67,7 @@ int Bot4::chooseColumn(std::array<std::array<char, columns>, rows> & field) {
         }
     }
 
-    //SECOND PRIORITY: STOP OPPONENT FROM WINNING (exact same functions, it is only checked for the opponents symbol)
+    //SECOND PRIORITY: STOP OPPONENT FROM WINNING (exact same functions. it is only checked for the opponents symbol)
 
     //horizontal
     for(int columnFirst = 0; columnFirst <= columns-4; columnFirst++)
@@ -116,16 +117,21 @@ int Bot4::chooseColumn(std::array<std::array<char, columns>, rows> & field) {
         }
     }
 
-    //THIRD PRIORITY return a random column but not a bad column
-    int column;
-    do {
-        static std::random_device rd;
-        static std::mt19937 engine(rd());
-        std::uniform_int_distribution<int> dist(0,columns-1);
-        column = dist(rd);
-    } while(field[column][rows-1] or column == badColumn[0] or column == badColumn[1] or column == badColumn[2]);
-    return column;
+    //THIRD PRIORITY return the first possible and good column
 
+    for(int column; column<columns-1; column++) {
+        if (!field[column][rows - 1] and !(std::find(badColumn.begin(), badColumn.end(), column) != badColumn.end())) {
+            return column;
+        }
+    }
+
+    //FOURTH PRIORITY return any possible column because every column is either bad or impossible
+
+    for(int column; column<columns-1; column++) {
+        if (!field[column][rows - 1]) {
+            return column;
+        }
+    }
 }
 
 //those 4 functions check if one player could win if it was his turn. when yes, the bot places his chip in the gap
@@ -136,7 +142,7 @@ int Bot4::chooseColumn(std::array<std::array<char, columns>, rows> & field) {
 //--> It is a bad idea to place the own chip there because it would help the other player winning
 //those bad columns are stored in badColumn[3]
 
-int Bot4::checkOneHorizontal(std::array<std::array<char, columns>, rows> & field, int columnFirst, int rowFirst, int& goodColumn, int* badColumn, char c1) {
+int Bot4::checkOneHorizontal(std::array<std::array<char, columns>, rows> & field, int columnFirst, int rowFirst, int& goodColumn, std::vector<int>& badColumn, char c1) {
     int countSymbol = 0;
     int positionEmpty;
     for(int i = 0; i < 4; i++)
@@ -158,20 +164,13 @@ int Bot4::checkOneHorizontal(std::array<std::array<char, columns>, rows> & field
         {
             //the fourth one can't be placed at the moment. There is one space below that should not be filled
             //because it either helps the opponent winning or helps the opponent to destroy the own chance.
-            for(int i = 0; i<3; i++)
-            {
-                if(!badColumn[i])
-                {
-                    badColumn[i] = columnFirst + positionEmpty;
-                    return 0;
-                }
-            }
+            badColumn.push_back(columnFirst+positionEmpty);
         }
     }
     return 0;
 }
 
-int Bot4::checkOneVertical(std::array<std::array<char, columns>, rows> & field, int columnFirst, int rowFirst, int& goodColumn,int* badColumn, char c1) {
+int Bot4::checkOneVertical(std::array<std::array<char, columns>, rows> & field, int columnFirst, int rowFirst, int& goodColumn, std::vector<int>& badColumn, char c1) {
     int countSymbol = 0;
     for(int i = 0; i < 4; i++)
     {
@@ -186,7 +185,7 @@ int Bot4::checkOneVertical(std::array<std::array<char, columns>, rows> & field, 
     return 0;
 }
 
-int Bot4::checkOneDiagonalUp(std::array<std::array<char, columns>, rows> &field, int columnFirst, int rowFirst, int& goodColumn,int* badColumn, char c1) {
+int Bot4::checkOneDiagonalUp(std::array<std::array<char, columns>, rows> &field, int columnFirst, int rowFirst, int& goodColumn, std::vector<int>& badColumn, char c1) {
     int countSymbol = 0;
     int positionEmpty;
     for(int i = 0; i < 4; i++)
@@ -208,20 +207,13 @@ int Bot4::checkOneDiagonalUp(std::array<std::array<char, columns>, rows> &field,
         {
             //the fourth one can't be placed at the moment. There is one space below that should not be filled
             //because it either helps the opponent winning or helps the opponent to destroy the own chance.
-            for(int i = 0; i<3; i++)
-            {
-                if(!badColumn[i])
-                {
-                    badColumn[i] = columnFirst + positionEmpty;
-                    return 0;
-                }
-            }
+            badColumn.push_back(columnFirst+positionEmpty);
         }
     }
     return 0;
 }
 
-int Bot4::checkOneDiagonalDown(std::array<std::array<char, columns>, rows> &field, int columnFirst, int rowFirst, int& goodColumn, int* badColumn, char c1) {
+int Bot4::checkOneDiagonalDown(std::array<std::array<char, columns>, rows> &field, int columnFirst, int rowFirst, int& goodColumn, std::vector<int>& badColumn, char c1) {
     int countSymbol = 0;
     int positionEmpty;
     for(int i = 0; i < 4; i++)
@@ -243,14 +235,7 @@ int Bot4::checkOneDiagonalDown(std::array<std::array<char, columns>, rows> &fiel
         {
             //the fourth one can't be placed at the moment. There is one space below that should not be filled
             //because it either helps the opponent winning or helps the opponent to destroy the own chance.
-            for(int i = 0; i<3; i++)
-            {
-                if(!badColumn[i])
-                {
-                    badColumn[i] = columnFirst + positionEmpty;
-                    return 0;
-                }
-            }
+            badColumn.push_back(columnFirst+positionEmpty);
         }
     }
     return 0;

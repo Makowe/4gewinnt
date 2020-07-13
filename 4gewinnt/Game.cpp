@@ -19,9 +19,8 @@ void Game::play()
             int choice = _a->chooseColumn(_board);
             if(_board[choice][rows-1] or choice >= columns or choice < 0)
             {
-                _gameIO->error();
-                std::cout << "\nPlayer 1 tried to put his chip in column: " << choice << "\n";
-                return;
+                std::cout << "\nPlayer 1 tried to make an illegal move. Player 2 wins.\n";
+                winner = 2;
             }
             else {
                 place(symbolA, choice);
@@ -34,9 +33,8 @@ void Game::play()
             int choice = _b->chooseColumn(_board);
             if(_board[choice][rows-1] or choice >= columns or choice < 0)
             {
-                _gameIO->error();
-                std::cout << "\nPlayer 2 tried to put his chip in column: " << choice << "\n";
-                return;
+                std::cout << "\nPlayer 2 tried to make an illegal move. Player 1 wins.\n";
+                winner = 1;
             }
             else {
                 place(symbolB, choice);

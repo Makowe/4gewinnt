@@ -6,17 +6,16 @@
 #define INC_4GEWINNT_HIDDENGAMEIO_H
 #include "GameIO.h"
 
+
 class HiddenGameIO : public GameIO {
 public:
     explicit HiddenGameIO(std::string textDocument);
     void printWinner(Player* winner) override ;
     void PrintTurn(Player* playerNow) override ;
     void printDraw() override ;
-    void error() override;
 
 private:
     std::string _textDocument;
-
 };
 
 

@@ -17,12 +17,13 @@ void PlayerIO::print(const std::string& text) {
 }
 
 void PlayerIO::printBoard(std::array<std::array<char, columns>, rows>& board) {
+    std::cout << "\n";
     for(int row = rows-1; row>=0; row--)
     {
         for(int column= 0; column<columns; column++)
         {
             if(board[column][row]) std::cout << board[column][row] << " ";
-            else std::cout << "_";
+            else std::cout << "_ ";
         }
         std::cout << "\n";
     }

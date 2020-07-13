@@ -9,15 +9,16 @@
 #include "random"
 #include "head.h"
 #include "PlayerIO.h"
+#include "vector"
 
 class Bot4 : public Player {
 public:
-    explicit Bot4(std::string name,PlayerIO* playerIo);
+    Bot4(std::string name,PlayerIO* playerIo);
     int chooseColumn(std::array<std::array<char, columns>,rows>&) override;
-    int checkOneHorizontal    (std::array<std::array<char, columns>, rows> & field, int columnFirst, int rowFirst, int& goodColumn, int* badColumn, char c1);
-    int checkOneVertical      (std::array<std::array<char, columns>, rows> & field, int columnFirst, int rowFirst, int& goodColumn, int* badColumn, char c1);
-    int checkOneDiagonalUp    (std::array<std::array<char, columns>, rows> & field, int columnFirst, int rowFirst, int& goodColumn, int* badColumn, char c1);
-    int checkOneDiagonalDown  (std::array<std::array<char, columns>, rows> & field, int columnFirst, int rowFirst, int& goodColumn, int* badColumn, char c1);
+    int checkOneHorizontal    (std::array<std::array<char, columns>, rows> & field, int columnFirst, int rowFirst, int& goodColumn, std::vector<int>& badColumn, char c1);
+    int checkOneVertical      (std::array<std::array<char, columns>, rows> & field, int columnFirst, int rowFirst, int& goodColumn, std::vector<int>& badColumn, char c1);
+    int checkOneDiagonalUp    (std::array<std::array<char, columns>, rows> & field, int columnFirst, int rowFirst, int& goodColumn, std::vector<int>& badColumn, char c1);
+    int checkOneDiagonalDown  (std::array<std::array<char, columns>, rows> & field, int columnFirst, int rowFirst, int& goodColumn, std::vector<int>& badColumn, char c1);
 
 };
 

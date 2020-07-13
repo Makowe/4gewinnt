@@ -29,15 +29,6 @@ void HiddenGameIO::printDraw() {
     resultFile.close();
 }
 
-void HiddenGameIO::error() {
-    using namespace std;
-    ofstream resultFile;
-    resultFile.open(_textDocument,ios::app);
-
-    resultFile << "0\n";
-    resultFile.close();
-}
-
 HiddenGameIO::HiddenGameIO(std::string textDocument)
 :
 _textDocument(std::move(textDocument))

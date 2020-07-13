@@ -16,10 +16,3 @@ void GameIO::PrintTurn(Player *playerNow) {
 void GameIO::printDraw() {
     std::cout << "Nobody has won this game.\n";
 }
-
-
-void GameIO::error() {
-    std::cout << "Fatal Error, game stopped";
-}
-
-

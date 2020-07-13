@@ -30,7 +30,7 @@ private:
     Player* _a;
     Player* _b;
     GameIO* _gameIO;
-    std::array<std::array<char,columns>,rows> _board;
+    std::array<std::array<char,columns>,rows> _board{};
 };
 
 
