@@ -34,7 +34,7 @@ int main() {
     }
 
     //1000 times random bot vs. intelligent bot
-    for (int i = 0; i < 1; i++) {
+    for (int i = 0; i < 1000; i++) {
         Game g1(&b1, &b4, &gio2);
         g1.play();
     }
